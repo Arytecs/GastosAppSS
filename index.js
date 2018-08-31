@@ -6,7 +6,7 @@ var port = 3800;
 
 //Database Connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/prueba', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost:27017/GastosApp', { useNewUrlParser: true })
     .then(() => {
         console.log("Conectado");
 

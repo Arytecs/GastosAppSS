@@ -73,13 +73,12 @@ function loginUser(req, res){
 
     var email = params.email;
     var password = params.password;
-    console.log(params);
     User.findOne({email: email}, (err, user) => {
         if(err) return res.status(500).send({message: 'Error en la petición'});
-        console.log(user);
         if(user){
             bcrypt.compare(password, user.password, (err, check) => {
                 if(check){
+                    console.log(user);
 
                     if(params.gettoken){
                         // generar y devovler tokken
@@ -93,7 +92,7 @@ function loginUser(req, res){
                     }
                     
                 }else{
-                    return res.status(404).send({message: 'El usuario no se ha podido identificar'});
+                    return res.status(404).send({message: 'Contraseña incorrecta'});
                 }
             })
         }else{
