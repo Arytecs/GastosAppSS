@@ -77,8 +77,6 @@ function loginUser(req, res){
         if(user){
             bcrypt.compare(password, user.password, (err, check) => {
                 if(check){
-                    console.log(user);
-
                     if(params.gettoken){
                         // generar y devovler tokken
                         return res.status(200).send({
@@ -164,7 +162,7 @@ function uploadImage(req, res){
     }
     if(req.files){
         var file_path = req.files.avatar.path;
-        var file_split = file_path.split('/');
+        var file_split = file_path.split('\\');
 
         var file_name = file_split[2];
 
@@ -208,6 +206,24 @@ function getImageFile(req, res){
     })
 }
 
+function deleteImage(req, res){
+    var userId = req.user.sub;
+
+    if(userId != req.params.id){
+        return res.status(200).send({message: 'Solo puedes elimar tu propio avatar'});
+    }
+
+    User.findByIdAndUpdate(userId, {avatar: ''}, (err, user) => {
+        if(err) return res.status(500).send({message: 'Error en la petición'});
+
+        if(!user) return res.status(404).send({message: 'Usuario no encontrado'});
+
+        fs.unlink('./uploads/users/' + user.avatar, (err) => {
+            return res.status(200).send({user});
+        });
+    });
+}
+
 module.exports = {
     home,
     pruebas,
@@ -217,5 +233,6 @@ module.exports = {
     getUsers,
     updateUser,
     uploadImage,
-    getImageFile
+    getImageFile,
+    deleteImage
 }
