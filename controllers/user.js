@@ -6,6 +6,7 @@ var jwt = require('../services/jwt')
 var mongoosePaginate = require('mongoose-pagination')
 var fs = require('fs');
 var path =  require('path');
+var moment = require('moment');
 
 function home(req, res){
     res.status(200).send({
@@ -22,26 +23,24 @@ function pruebas(req, res){
 function saveUser(req, res){
     var params = req.body;
     var user = new User();
-    if (params.name && params.surname && params.nick &&
-         params.email && params.password){
+    if (params.name && params.email && params.password){
              user.name = params.name;
-             user.surname = params.surname;
-             user.nick = params.nick.toLowerCase();
              user.email = params.email.toLowerCase();
              user.role = 'ROLE_USER';
-             user.image = null;
+             user.avatar = null;
+             user.created_at = moment().unix();
+             user.dob = '';
 
              User.find(
                  { $or: 
                     [
                      {email: user.email.toLowerCase()},
-                     {nick: user.nick.toLowerCase()}
                     ]
                 }).exec((err, users) => {
                     if(err) return res.status(500).send({message: 'Error en la petición de usuarios'})
 
                     if(users && users.length >= 1){
-                        return res.status(200).send({message: 'El email o nick ya están en uso'})
+                        return res.status(200).send({message: 'El email ya está en uso'})
                     }else{
                         bcrypt.hash(params.password, null, null, (err, hash) => {
                             user.password = hash;
@@ -164,7 +163,7 @@ function uploadImage(req, res){
         return removeFilesOfUploads(res, file_path, 'No tienes permiso para actualizar los datos del usuario') 
     }
     if(req.files){
-        var file_path = req.files.image.path;
+        var file_path = req.files.avatar.path;
         var file_split = file_path.split('/');
 
         var file_name = file_split[2];
@@ -174,7 +173,7 @@ function uploadImage(req, res){
 
         if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif'){
             //Actualizar documento de usuario loggeado
-            User.findByIdAndUpdate(userId, {image: file_name}, {new: true}, (err, userUpdated) => {
+            User.findByIdAndUpdate(userId, {avatar: file_name}, {new: true}, (err, userUpdated) => {
                 if(err) return res.status(500).send({message: 'Error en la petición'});
 
                 if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
@@ -196,7 +195,7 @@ function removeFilesOfUploads(res, file_path, message){
 }
 
 function getImageFile(req, res){
-    var image_file = req.params.imageFile;
+    var image_file = req.params.avatar;
 
     var path_file = './uploads/users/' + image_file;
 
