@@ -10,16 +10,16 @@
   "author": "Araceli",
   "license": "MIT",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
+    "bcrypt": "3.0.0",
     "body-parser": "^1.18.3",
     "connect-multiparty": "^2.1.1",
     "express": "^4.16.3",
     "jwt-simple": "^0.5.1",
     "moment": "^2.22.2",
-    "mongoose": "^5.2.10",
+    "mongoose": "^5.2.12",
     "mongoose-pagination": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.4"
   }
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 var User = require('../models/user');
 var jwt = require('../services/jwt')
 var mongoosePaginate = require('mongoose-pagination')
@@ -42,8 +42,13 @@ function saveUser(req, res){
                     if(users && users.length >= 1){
                         return res.status(200).send({message: 'El email ya está en uso'})
                     }else{
-                        bcrypt.hash(params.password, null, null, (err, hash) => {
+                        console.log(params.password);
+                        const salt = 10;
+                        bcrypt.hash(params.password, salt,(err, hash) => {
+                            
                             user.password = hash;
+                            console.log(hash);
+                            
            
                             user.save((err, userStored) => {
                                 if(err) return res.status(500).send({ message: 'Error al guardar el usuario' });
@@ -221,6 +226,17 @@ function deleteImage(req, res){
         fs.unlink('./uploads/users/' + user.avatar, (err) => {
             return res.status(200).send({user});
         });
+    });
+}
+
+function deleteUser(req, res){
+    var userId = req.user.sub
+    if(userId != req.params.id){
+        return res.status(200).send({message: 'Solo puedes elimar tu propia cuenta'});
+    }
+
+    User.findByIdAndRemove(userId, (err, user) => {
+
     });
 }
 
