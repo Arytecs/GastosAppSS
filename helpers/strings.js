@@ -1,0 +1,1 @@
+const roleUser = 'ROLE_USER';
