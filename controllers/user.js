@@ -21,6 +21,7 @@ function pruebas(req, res) {
   });
 }
 
+
 function saveUser(req, res) {
   const {name, email, password} = req.body;
   if (name && email && password) {
@@ -73,6 +74,7 @@ function saveUser(req, res) {
   }
 }
 
+
 function loginUser(req, res) {
   const {email, password, isToken} = req.body;
   User.findOne({ email: email }, (err, user) => {
@@ -92,6 +94,7 @@ function loginUser(req, res) {
           }
         } else {
           return res.status(404).send({ message: 'Contraseña incorrecta' });
+
         }
       });
     } else {
