@@ -1,7 +1,7 @@
 'use strict'
 
 var bcrypt = require('bcrypt-nodejs');
-var User = require('../models/user');
+var Account = require('../models/account');
 var jwt = require('../services/jwt')
 var mongoosePaginate = require('mongoose-pagination')
 var fs = require('fs');
