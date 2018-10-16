@@ -28,7 +28,7 @@ function saveUser(req, res) {
     let user = new User({
       name: name,
       email: email,
-      role: roleUser,
+      role: strings.roleUser,
       avatar: null,
       created_at: moment().unix(),
       dob: ''
@@ -77,6 +77,7 @@ function saveUser(req, res) {
 
 function loginUser(req, res) {
   const {email, password, isToken} = req.body;
+
   User.findOne({ email: email }, (err, user) => {
     if (err) return res.status(500).send({ message: 'Error en la petición' });
     if (user) {
@@ -90,6 +91,7 @@ function loginUser(req, res) {
             });
           } else {
             //Devolver datos de usuario
+            user.password = undefined;
             return res.status(200).send({ user });
           }
         } else {

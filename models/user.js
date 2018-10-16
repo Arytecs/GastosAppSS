@@ -9,8 +9,7 @@ var UserSchema = Schema({
     password: String,
     role: String,
     avatar: String,
-    created_at: String,
-    dob: String
+    created_at: String
 });
 
 module.exports = mongoose.model('User', UserSchema);

@@ -7,6 +7,7 @@ var app = express();
 
 //cargar rutas
 var user_routes = require('./routes/user');
+var account_routes = require('./routes/account');
 
 //middlewares
 app.use(bodyParser.urlencoded({extended: false}));
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 //rutas
 app.use('/api', user_routes);
+app.use('/api', account_routes);
 
 //exportar
 module.exports = app;
