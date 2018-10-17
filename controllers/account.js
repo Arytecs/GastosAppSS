@@ -45,13 +45,33 @@ function saveAccount(req, res) {
 
 function getAccounts(req, res) {
 
-    Account.find({creator: req.user.sub}).sort('-created_at').exec((err, accounts) => {
+    Account.find({creator: req.user.sub}).sort('name').exec((err, accounts) => {
         if(err) return res.status(500).send({message: 'Error devolver las cuentas'});
-
-        console.log(accounts);
 
         return res.status(200).send({accounts});
     });    
+}
+
+function updateAccount(req, res) {
+    const update = req.body;
+
+    Account.findByIdAndUpdate(update._id, update, {new: true}, (err, accountUpdated) => {
+        if (err) return res.status(500).send({message: 'Error en la petición'});
+
+        if(!accountUpdated) return res.status(404).send({message: 'No se ha podido actualizar la cuenta'});
+        
+        return res.status(200).send({user: accountUpdated});
+    });
+}
+
+function deleteAccount(req, res) {
+    const params = req.params;
+
+    Account.find({'_id': params.id}).remove(err => {
+        if(err) return res.status(500).send({message: 'Error al borrar la cuenta'});
+
+        return res.status(200).send({message: 'Cuenta eliminada'});
+    });
 }
 
 function uploadImage(req, res){
@@ -109,6 +129,8 @@ module.exports = {
     pruebas,
     saveAccount,  
     getAccounts,
+    updateAccount,
+    deleteAccount,
     uploadImage,
     removeFilesOfUploads,
     getImageFile
