@@ -15,13 +15,14 @@ function pruebas(req, res){
 }
 
 function saveCategory(req, res) {
-    const {name, idPadre, creator} = req.body;
+    const {name, idPadre, creator, branch} = req.body;
 
     if (name && idPadre && creator) {
       let category = new Category({
         name: name,        
         idPadre: idPadre,
-        creator: creator
+        creator: creator,
+        branch: branch
       });
   
         category.save((err, categoryStored) => {
