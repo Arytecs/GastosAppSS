@@ -16,13 +16,14 @@ function pruebas(req, res){
 }
 
 function saveMovement(req, res) {
-    const {name, amount, created_at, category, account, userId} = req.body;
+    const {name, amount, date, category, account, userId} = req.body;
 
-    if (name && amount && created_at && category && account && userId) {
+    if (name && amount && date && category && account && userId) {
       let movement = new Movement({
         name: name,        
         amount: amount,
-        created_at: created_at,
+        created_at: moment().unix(),
+        date: date,
         category: category,
         account: account,
         userId: userId
