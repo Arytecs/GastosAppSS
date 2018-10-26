@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var AccountSchema = Schema({
     name: String,
     image: String,
-    creator: {type: Schema.ObjectId, ref: 'User'},
+    creator: String,
     shared: [],
     created_at: String
 });
