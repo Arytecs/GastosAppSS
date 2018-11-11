@@ -43,6 +43,16 @@ function saveAccount(req, res) {
     }
 }
 
+function getAccount(req, res) {
+    const params = req.params;
+
+    Account.findOne({_id: params.id}).exec((err, account) => {
+        if(err) return res.status(500).send({message: 'Error devolver las cuentas'});
+
+        return res.status(200).send({account});
+    });    
+}
+
 function getAccounts(req, res) {
 
     Account.find({creator: req.user.sub}).sort('name').exec((err, accounts) => {
@@ -127,7 +137,8 @@ function getImageFile(req, res){
 
 module.exports = {
     pruebas,
-    saveAccount,  
+    saveAccount,
+    getAccount,  
     getAccounts,
     updateAccount,
     deleteAccount,
