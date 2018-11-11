@@ -12,6 +12,7 @@ var api = express.Router();
 
 api.get('/account', AccountController.pruebas);
 api.post('/save-account',md_auth.ensureAuth, AccountController.saveAccount);
+api.get('/get-account/:id', md_auth.ensureAuth, AccountController.getAccount);
 api.get('/get-accounts/:id', md_auth.ensureAuth, AccountController.getAccounts);
 api.put('/update-acc/', md_auth.ensureAuth, AccountController.updateAccount);
 api.delete('/delete-acc/:id', md_auth.ensureAuth, AccountController.deleteAccount);
